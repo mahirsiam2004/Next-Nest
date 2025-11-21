@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    :root {
+        --primary-color: #6b46c1;
+        --primary-dark: #5a32b0;
+        --primary-light: #8a67d5;
+        --accent-color: #8a67d5;
+        --accent-hover: #6b46c1;
+        --text-light: #0b0811b8;
+        --text-muted: #130e1fbb;
+        --text-dim: #261c3b44;
+        --card-bg: rgba(255, 255, 255, 0.5);
+        --border-light: rgba(255, 255, 255, 0.283);
+    }
+/* font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; */
+
+    body {
+        background: #ffffff;
+        color: var(--text-light);
+        min-height: 100vh;
+    }
+
+    .contact-container {
+        margin-top: -30px;
+        padding: 0 20px;
+    }
+
+    .contact-card {
+        background: #c1aee95e;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px #cab8f035;
+        
+        border: 1px solid var(--border-light);
+        overflow: hidden;
+    }
+
+    .contact-header {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .contact-title {
+        font-weight: 800;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: #633eb2bb;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-subtitle {
+        color: rgba(0, 0, 0, 0.66);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .contact-form-section {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .form-container {
+        flex: 1;
+        padding: 2rem;
+        min-width: 320px;
+    }
+
+    .info-container {
+        background: linear-gradient(135deg, #8a67d523, #8a67d570);
+        flex: 0 0 300px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.66);
+    }
+
+    .form-control {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 12px 16px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        border: #140f1d45 1px solid;
+        border-radius: 6px;
+      
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(3, 165, 137, 0.2);
+    }
+
+    .form-control::placeholder {
+        color: rgba(0, 0, 0, 0.246);
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .contact-btn {
+        background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+        border: none;
+        color: white;
+        border-radius: 50px;
+        padding: 12px 28px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contact-btn:hover {
+        background: linear-gradient(135deg, var(--accent-color), var(--primary-dark));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(154, 82, 236, 0.3);
+    }
+
+    .contact-btn i {
+        margin-right: 0.5rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: var(--accent-color);
+        font-size: 1.2rem;
+    }
+
+    .info-content h4 {
+        margin: 0 0 0.3rem 0;
+        color: var(--text-light);
+        font-size: 1rem;
+    }
+
+    .info-content p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .social-links {
+        display: flex;
+        margin-top: 2rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #8a67d5a2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #140f1d;
+        margin-right: 0.8rem;
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        background: var(--accent-color);
+        transform: translateY(-3px);
+        color: white;
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .alert-info {
+        background: rgba(3, 165, 137, 0.2);
+        border: 1px solid rgba(3, 165, 137, 0.3);
+        color: var(--text-light);
+    }
+
+    .footer-note {
+        text-align: center;
+        margin-top: 2rem;
+        color: var(--text-dim);
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+        .contact-form-section {
+            flex-direction: column;
+        }
+
+        .info-container {
+            order: -1;
+            border-radius: 16px 16px 0 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="contact-container">
+    <div class="contact-card">
+        <div class="contact-header">
+            <h1 class="contact-title">Get in Touch</h1>
+            <p class="contact-subtitle">Have questions about finding your perfect home? Reach out to us - we're here to help with your property needs.</p>
+        </div>
+
+        <div class="contact-form-section">
+            <div class="form-container">
+                {% if msg %}
+                <div class="alert alert-info" role="alert">
+                    {{ msg }}
+                </div>
+                {% endif %}
+
+                <form action="/contact/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label" for="subject">Subject</label>
+                        <input class="form-control" type="text" id="subject" name="subject" placeholder="How can we help you?" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input class="form-control" type="email" id="email" name="email" placeholder="dinar414.@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="message">Message</label>
+                        <textarea class="form-control" id="message" name="body" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="contact-btn">
+                        <i class="fa fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+            
+            <div class="info-container">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Email</h4>
+                        <p>dinar414@example.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Location</h4>
+                        <p>Dinajpur, Bangladesh</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Phone</h4>
+                        <p>+880 1755378017</p>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fa fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fa fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

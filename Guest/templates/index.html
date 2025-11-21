@@ -1,0 +1,920 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    /* Purple Theme Variables from about.html */
+    :root {
+        --primary: #6b46c1;
+        --primary-dark: #5a32b0;
+        --secondary: #8a67d5;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+        --text-light: #0b0811b8;
+        --text-muted: #130e1fbb;
+        --text-dim: #261c3b44;
+        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --card-bg: rgba(255, 255, 255, 0.5);
+        --border-light: rgba(255, 255, 255, 0.283);
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        padding: 5rem 0;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        background: #cab8f03f;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px #cab8f035;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        margin-bottom: 3rem;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 2rem;
+    }
+    
+    .hero-title {
+        font-weight: 800;
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        color: var(--text-muted);
+    }
+    
+    .search-container {
+        background: rgba(138, 103, 213, 0.1);
+        border-radius: 50px;
+        padding: 0.5rem;
+        display: flex;
+        max-width: 700px;
+        margin: 0 auto;
+        border: 1px solid var(--border-light);
+    }
+    
+    .search-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        color: var(--text-light);
+        font-size: 1rem;
+        outline: none;
+    }
+    
+    .search-input::placeholder {
+        color: var(--text-muted);
+    }
+    
+    .search-btn {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        border: none;
+        color: white;
+        border-radius: 50px;
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .search-btn:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(107, 70, 193, 0.3);
+    }
+    
+    /* Feature Cards */
+    .features-section {
+        margin: 4rem 0;
+    }
+    
+    .feature-card {
+        background: #cab8f02e;
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: var(--transition);
+        border: 1px solid var(--border-light);
+        height: 100%;
+        box-shadow: 0 6px 16px #cab8f035;
+        backdrop-filter: blur(10px);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        background: #cab8f02e;
+        border-color: rgba(138, 103, 213, 0.3);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+    }
+    
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(138, 103, 213, 0.2), rgba(107, 70, 193, 0.2));
+        border-radius: 50%;
+        font-size: 1.8rem;
+        color: var(--primary);
+    }
+    
+    .feature-title {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--primary);
+    }
+    
+    .feature-text {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    /* Property Section */
+    .section-title-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin: 0;
+        color: var(--primary);
+        position: relative;
+    }
+    
+    .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        border-radius: 3px;
+    }
+    
+    .view-all-link {
+        color: var(--primary);
+        font-weight: 600;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+    }
+    
+    .view-all-link:hover {
+        color: var(--secondary);
+        text-decoration: none;
+        transform: translateX(5px);
+    }
+    
+    .view-all-link i {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .property-card {
+        background: #cab8f02e;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 16px #cab8f035;
+        backdrop-filter: blur(10px);
+        transition: var(--transition);
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-light);
+        position: relative;
+    }
+    
+    .property-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+        background: #cab8f02e;
+        border-color: rgba(138, 103, 213, 0.2);
+    }
+    
+    .property-image-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .property-image {
+        height: 280px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .property-card:hover .property-image {
+        transform: scale(1.05);
+    }
+    
+    .property-type {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 1;
+    }
+    
+    .property-favorite {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        backdrop-filter: blur(5px);
+        z-index: 1;
+    }
+    
+    .property-favorite:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1);
+    }
+    
+    .property-favorite i {
+        color: white;
+        font-size: 1.2rem;
+    }
+    
+    .property-details {
+        padding: 1.5rem;
+    }
+    
+    .property-title {
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .property-location {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .property-location i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+    }
+    
+    .property-description {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+        height: 4.5em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    
+    .property-meta {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-light);
+    }
+    
+    .property-meta-item {
+        display: flex;
+        align-items: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+    
+    .property-meta-item i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+    }
+    
+    .property-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    
+    .price-amount {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+    
+    .price-period {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .quick-view-btn {
+        background: linear-gradient(135deg, rgba(138, 103, 213, 0.8), rgba(107, 70, 193, 0.8));
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 0.7rem 1.5rem;
+        font-weight: 600;
+        width: 100%;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .quick-view-btn i {
+        margin-right: 0.5rem;
+    }
+    
+    .quick-view-btn:hover {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(107, 70, 193, 0.3);
+    }
+    
+    /* Carousel Controls */
+    .carousel-control-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .carousel-control-prev, .carousel-control-next {
+        width: 40px;
+        height: 40px;
+        background: rgba(138, 103, 213, 0.1);
+        border-radius: 50%;
+        opacity: 1;
+        margin: 0 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+    }
+    
+    .carousel-control-prev:hover, .carousel-control-next:hover {
+        background: rgba(138, 103, 213, 0.3);
+        transform: scale(1.1);
+    }
+    
+    .carousel-indicators {
+        bottom: -40px;
+    }
+    
+    .carousel-indicators li {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(138, 103, 213, 0.3);
+        margin: 0 5px;
+        transition: var(--transition);
+    }
+    
+    .carousel-indicators li.active {
+        background-color: var(--primary);
+        width: 12px;
+        height: 12px;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        border-radius: 16px;
+        padding: 3rem;
+        text-align: center;
+        margin: 4rem 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(107, 70, 193, 0.1);
+    }
+    
+    .cta-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    
+    .cta-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .cta-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: white;
+    }
+    
+    .cta-subtitle {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .cta-btn {
+        background: white;
+        color: var(--primary);
+        border: none;
+        border-radius: 50px;
+        padding: 1rem 2.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: var(--transition);
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+    }
+    
+    .cta-btn:hover {
+        background: var(--dark);
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+    }
+    
+    /* Testimonials Section */
+    .testimonials-section {
+        margin: 4rem 0;
+    }
+
+    .testimonial-card {
+        background: #cab8f02e;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 6px 16px #cab8f035;
+        backdrop-filter: blur(10px);
+        transition: var(--transition);
+        border: 1px solid var(--border-light);
+        height: 100%;
+        position: relative;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        background: #cab8f02e;
+        border-color: rgba(138, 103, 213, 0.2);
+    }
+    
+    .testimonial-quote {
+        font-size: 4rem;
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        opacity: 0.1;
+        color: var(--primary);
+    }
+    
+    .testimonial-text {
+        color: var(--text-muted);
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+    }
+    
+    .testimonial-user {
+        display: flex;
+        align-items: center;
+    }
+    
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 1rem;
+        border: 2px solid rgba(138, 103, 213, 0.3);
+    }
+    
+    .testimonial-info h5 {
+        margin: 0;
+        font-weight: 600;
+        color: var(--text-light);
+    }
+    
+    .testimonial-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 0;
+        background: rgba(138, 103, 213, 0.05);
+        border-radius: 16px;
+        margin: 2rem 0;
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        color: rgba(138, 103, 213, 0.2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--primary);
+    }
+    
+    .empty-state-text {
+        color: var(--text-muted);
+        max-width: 500px;
+        margin: 0 auto 2rem;
+    }
+    
+    .empty-state-btn {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+    
+    .empty-state-btn:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        transform: translateY(-3px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .search-container {
+            flex-direction: column;
+            border-radius: 16px;
+        }
+        
+        .search-input {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        
+        .search-btn {
+            width: 100%;
+        }
+        
+        .cta-title {
+            font-size: 1.8rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 3rem 0;
+        }
+        
+        .feature-card, .testimonial-card {
+            margin-bottom: 2rem;
+        }
+        
+        .property-card {
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Find Your Perfect Home</h1>
+        <p class="hero-subtitle">Discover your dream rental with NextNest's curated selection of properties</p>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Enter location, property type, or keywords...">
+            <button class="search-btn"><i class="fas fa-search mr-2"></i> Search Properties</button>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="feature-title">Prime Locations</h3>
+                <p class="feature-text">Explore properties in the most sought-after neighborhoods and areas with excellent connectivity and amenities.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-title">Verified Listings</h3>
+                <p class="feature-text">All our properties are thoroughly vetted and verified to ensure you get exactly what you see online.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h3 class="feature-title">No Brokerage</h3>
+                <p class="feature-text">Connect directly with property owners and save on unnecessary brokerage fees and commissions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="rental-container">
+    <!-- Apartments Section -->
+    {% if room %}
+    <div class="section-title-container">
+        <h2 class="section-title">Recommended Apartments</h2>
+        <a href="/properties/apartment/" class="view-all-link">View All <i class="fas fa-chevron-right"></i></a>
+    </div>
+    
+    <div id="apartmentsCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    {% for i in room.0 %}
+                    <div class="col-md-4 mb-4">
+                        <div class="property-card">
+                            <div class="property-image-container">
+                                <span class="property-type">Apartment</span>
+                                <div class="property-favorite">
+                                    <i class="far fa-heart"></i>
+                                </div>
+                                <img src='{{i.img.url}}' class="property-image" alt="Apartment image">
+                            </div>
+                            <div class="property-details">
+                                <h3 class="property-title">Modern Apartment in {{i.location}}</h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    {{i.location}}, {{i.city}}
+                                </div>
+                                <div class="property-price">
+                                    <span class="price-amount">${{i.cost}}</span>
+                                    <span class="price-period">/ month</span>
+                                </div>
+                                <p class="property-description">{{i.desc|slice:"0:120"}}{% if i.desc|length > 120 %}...{% endif %}</p>
+                                <div class="property-meta">
+                                    <div class="property-meta-item">
+                                        <i class="fas fa-bed"></i> {{i.bedrooms}} Beds
+                                    </div>
+                                    <div class="property-meta-item">
+                                        <i class="fas fa-bath"></i> Bath
+                                    </div>
+                                    <div class="property-meta-item">
+                                        <i class="fas fa-vector-square"></i> {{i.dimention}} sq.ft
+                                    </div>
+                                </div>
+                                <hr style="border-color: var(--border-light); margin: 1rem 0;">
+                                <form action="/descr">
+                                    <button name="id" value="{{i.room_id}}" class="quick-view-btn">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and forloop.counter < room.2 %}
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="carousel-control-section">
+            <a class="carousel-control-prev" href="#apartmentsCarousel" role="button" data-slide="prev">
+                <i class="fas fa-chevron-left" style="color: var(--primary);"></i>
+            </a>
+            <ol class="carousel-indicators">
+                {% for i in room.1 %}
+                <li data-target="#apartmentsCarousel" data-slide-to="{{forloop.counter0}}" {% if forloop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <a class="carousel-control-next" href="#apartmentsCarousel" role="button" data-slide="next">
+                <i class="fas fa-chevron-right" style="color: var(--primary);"></i>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Houses Section -->
+    {% if house %}
+    <div class="section-title-container">
+        <h2 class="section-title">Recommended Houses</h2>
+        <a href="/properties/house/" class="view-all-link">View All <i class="fas fa-chevron-right"></i></a>
+    </div>
+    
+    <div id="housesCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    {% for i in house.0 %}
+                    <div class="col-md-4 mb-4">
+                        <div class="property-card">
+                            <div class="property-image-container">
+                                <span class="property-type">House</span>
+                                <div class="property-favorite">
+                                    <i class="far fa-heart"></i>
+                                </div>
+                                <img src='{{i.img.url}}' class="property-image" alt="House image">
+                            </div>
+                            <div class="property-details">
+                                <h3 class="property-title">Spacious House in {{i.location}}</h3>
+                                <div class="property-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    {{i.location}}, {{i.city}}
+                                </div>
+                                <div class="property-price">
+                                    <span class="price-amount">${{i.cost}}</span>
+                                    <span class="price-period">/ month</span>
+                                </div>
+                                <p class="property-description">{{i.desc|slice:"0:120"}}{% if i.desc|length > 120 %}...{% endif %}</p>
+                                <div class="property-meta">
+                                    <div class="property-meta-item">
+                                        <i class="fas fa-bed"></i> {{i.bedrooms}} Beds
+                                    </div>
+                                    <div class="property-meta-item">
+                                        <i class="fas fa-bath"></i> Bath
+                                    </div>
+                                    <div class="property-meta-item">
+                                        <i class="fas fa-vector-square"></i> {{i.area}} sq.ft
+                                    </div>
+                                </div>
+                                <hr style="border-color: var(--border-light); margin: 1rem 0;">
+                                <form action="/descr">
+                                    <button name="id" value="{{i.house_id}}" class="quick-view-btn">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and forloop.counter < house.2 %}
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="carousel-control-section">
+            <a class="carousel-control-prev" href="#housesCarousel" role="button" data-slide="prev">
+                <i class="fas fa-chevron-left" style="color: var(--primary);"></i>
+            </a>
+            <ol class="carousel-indicators">
+                {% for i in house.1 %}
+                <li data-target="#housesCarousel" data-slide-to="{{forloop.counter0}}" {% if forloop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <a class="carousel-control-next" href="#housesCarousel" role="button" data-slide="next">
+                <i class="fas fa-chevron-right" style="color: var(--primary);"></i>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Empty State (if no properties available) -->
+    {% if not room and not house %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-home"></i>
+        </div>
+        <h3 class="empty-state-title">No Properties Available</h3>
+        <p class="empty-state-text">We don't have any listings that match your criteria at the moment. Please try different search parameters or check back soon.</p>
+        <a href="/" class="empty-state-btn">Back to Home</a>
+    </div>
+    {% endif %}
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-pattern"></div>
+        <div class="cta-content">
+            <h2 class="cta-title">List Your Property With Us</h2>
+            <p class="cta-subtitle">Join thousands of property owners who trust NextNest to connect them with quality tenants. Our platform makes it easy to list, manage, and rent your property.</p>
+            <a href="/profile" class="cta-btn">Add Your Property</a>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="section-title-container">
+            <h2 class="section-title">What Our Users Say</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-text">Finding an apartment through NextNest was the easiest experience I've had. The verified listings gave me peace of mind, and I found my dream home in just a week!</p>
+                    <div class="testimonial-user">
+                        <img src="{% static 'assets/userr.png' %}" class="testimonial-avatar" alt="User Avatar">
+                        <div class="testimonial-info">
+                            <h5>Cristiano Ronaldo</h5>
+                            <p>Dinajpur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-text">As a property owner, NextNest made it incredibly simple to list my apartment and find reliable tenants. The no-brokerage model means better rates for everyone!</p>
+                    <div class="testimonial-user">
+                        <img src="{% static 'assets/dinarr.jpg' %}" class="testimonial-avatar" alt="User Avatar">
+                        <div class="testimonial-info">
+                            <h5>Md. Delower Hossin Dinar</h5>
+                            <p>Dhaka</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <p class="testimonial-text">The transparent pricing and detailed property information on NextNest helped me make informed decisions. I saved so much time by avoiding fake listings!</p>
+                    <div class="testimonial-user">
+                        <img src="{% static 'assets/userr.png' %}" class="testimonial-avatar" alt="User Avatar">
+                        <div class="testimonial-info">
+                            <h5>Aishwarya Rai</h5>
+                            <p>Rajshahi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,829 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    :root {
+        --primary: #6b46c1;
+        --primary-dark: #5a32b0;
+        --secondary: #8a67d5;
+        --accent: #a78bfa;
+        --dark: #0f172a;
+        --light: #ffffff;
+        --gray-50: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --text-light: #0b0811b8;
+        --text-muted: #130e1fbb;
+        --text-dim: #261c3b44;
+        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        --card-bg: rgba(255, 255, 255, 0.5);
+        --border-light: rgba(255, 255, 255, 0.283);
+        --purple-bg: #cab8f02e;
+        --purple-shadow: #cab8f035;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --border-radius: 12px;
+        --transition: all 0.3s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        color: var(--text-light);
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1300px;
+        margin: -20px auto;
+        padding: 0 1.5rem;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+    }
+
+    .breadcrumb nav {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+    }
+
+    .breadcrumb a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .breadcrumb a:hover {
+        color: var(--primary-dark);
+    }
+
+    .breadcrumb-separator {
+        color: var(--gray-400);
+    }
+
+    /* Verification Badge */
+    .verification-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
+    }
+
+    .verification-badge.verified {
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+    }
+
+    .verification-badge.unverified {
+        background: linear-gradient(135deg, var(--warning), #d97706);
+        color: white;
+    }
+
+    .verification-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+    }
+
+    /* Main Layout */
+    .property-layout {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    /* Property Image */
+    .property-image-container {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    .property-image {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
+    }
+
+    .property-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 20px 40px rgba(138, 103, 213, 0.2);
+    }
+
+    .property-type-badge {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .price-badge {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--border-radius);
+        font-weight: 700;
+        font-size: 1.25rem;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    /* Property Info */
+    .property-info {
+        background: var(--purple-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 6px 16px var(--purple-shadow);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .property-info:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+    }
+
+    .property-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .property-location {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-muted);
+        font-size: 1.125rem;
+        margin-bottom: 2rem;
+    }
+
+    .property-location i {
+        color: var(--primary);
+    }
+
+    /* Features Grid */
+    .features-section {
+        background: var(--purple-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 6px 16px var(--purple-shadow);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .features-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        bottom: -10px;
+        left: 0;
+        border-radius: 2px;
+    }
+
+    .section-title i {
+        color: var(--primary);
+        font-size: 1.25rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .feature-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .feature-card:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(138, 103, 213, 0.1);
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+        transition: var(--transition);
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1);
+        box-shadow: 0 5px 15px rgba(138, 103, 213, 0.3);
+    }
+
+    .feature-content {
+        flex: 1;
+    }
+
+    .feature-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+
+    .feature-value {
+        font-size: 1rem;
+        color: var(--text-light);
+        font-weight: 600;
+    }
+
+    /* Description */
+    .description-section {
+        background: var(--purple-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 6px 16px var(--purple-shadow);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .description-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+    }
+
+    .property-description {
+        color: var(--text-muted);
+        font-size: 1.125rem;
+        line-height: 1.8;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .sidebar-card {
+        background: var(--purple-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 6px 16px var(--purple-shadow);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .sidebar-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+    }
+
+    .sidebar-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Owner Card */
+    .owner-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .owner-avatar {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        box-shadow: 0 5px 15px rgba(138, 103, 213, 0.2);
+    }
+
+    .owner-details h4 {
+        color: var(--text-light);
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .owner-details p {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.875rem 1.5rem;
+        border-radius: var(--border-radius);
+        border: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: var(--card-shadow);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(138, 103, 213, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.6);
+        color: var(--primary);
+        border: 1px solid var(--border-light);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(138, 103, 213, 0.1);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .stat-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(138, 103, 213, 0.1);
+    }
+
+    .stat-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    /* Property Details List */
+    .details-list {
+        list-style: none;
+    }
+
+    .details-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-light);
+        transition: var(--transition);
+    }
+
+    .details-list li:hover {
+        background: rgba(255, 255, 255, 0.3);
+        padding-left: 0.5rem;
+        border-radius: 6px;
+    }
+
+    .details-list li:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: var(--text-light);
+    }
+
+    .status-verified {
+        color: var(--success);
+    }
+
+    .status-pending {
+        color: var(--warning);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .property-layout {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1rem;
+        }
+        
+        .property-image {
+            height: 300px;
+        }
+        
+        .property-title {
+            font-size: 1.75rem;
+        }
+        
+        .property-info,
+        .features-section,
+        .description-section,
+        .sidebar-card {
+            padding: 1.5rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .property-image {
+            height: 250px;
+        }
+        
+        .property-title {
+            font-size: 1.5rem;
+        }
+        
+        .features-grid {
+            gap: 0.75rem;
+        }
+        
+        .feature-card {
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <nav>
+            <a href="/">Home</a>
+            <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+            <a href="{% url 'view_all' property_type=type|lower %}">{{ type }}s</a>
+            <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+            <span>Property Details</span>
+        </nav>
+    </div>
+
+    <!-- Verification Badge -->
+    <div class="verification-badge {% if val.verified %}verified{% else %}unverified{% endif %}">
+        <i class="fas {% if val.verified %}fa-shield-check{% else %}fa-exclamation-triangle{% endif %}"></i>
+        <span>{% if val.verified %}Verified Property{% else %}Pending Verification{% endif %}</span>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="property-layout">
+        <!-- Main Content -->
+        <main>
+            <!-- Property Image -->
+            <div class="property-image-container">
+                <img src="{{ val.img.url }}" alt="{{ type }} in {{ val.location }}" class="property-image">
+                <div class="property-type-badge">{{ type }}</div>
+                <div class="price-badge">${{ val.cost }}/mo</div>
+            </div>
+
+            <!-- Property Info -->
+            <div class="property-info">
+                <h1 class="property-title">
+                    {% if type == 'Apartment' %}
+                        Modern Apartment in {{ val.location }}
+                    {% else %}
+                        Spacious House in {{ val.location }}
+                    {% endif %}
+                </h1>
+                <div class="property-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ val.location }}, {{ val.city }}</span>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-section">
+                <h2 class="section-title">
+                    <i class="fas fa-list-check"></i>
+                    Property Features
+                </h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Bedrooms</div>
+                            <div class="feature-value">{{ val.bedrooms }} Bedroom{% if val.bedrooms != 1 %}s{% endif %}</div>
+                        </div>
+                    </div>
+
+                    {% if type == 'Apartment' %}
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Dimensions</div>
+                            <div class="feature-value">{{ val.dimention }}</div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Area</div>
+                            <div class="feature-value">{{ val.area }} sq ft</div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Floor</div>
+                            <div class="feature-value">{{ val.floor }}{% if val.floor == 1 %}st{% elif val.floor == 2 %}nd{% elif val.floor == 3 %}rd{% else %}th{% endif %} Floor</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Kitchen{% if type != 'Apartment' %}s{% endif %}</div>
+                            <div class="feature-value">
+                                {% if type == 'Apartment' %}
+                                    {{ val.kitchen|title }}
+                                {% else %}
+                                    {{ val.kitchen }} Kitchen{% if val.kitchen != 1 %}s{% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-balcony"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Balcony</div>
+                            <div class="feature-value">{{ val.balcany|title }}</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <div class="feature-label">Listed Date</div>
+                            <div class="feature-value">{{ val.date|date:"M d, Y" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="description-section">
+                <h2 class="section-title">
+                    <i class="fas fa-align-left"></i>
+                    Description
+                </h2>
+                <p class="property-description">{{ val.desc }}</p>
+            </div>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Owner Information -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-user"></i>
+                    Property Owner
+                </h3>
+                <div class="owner-info">
+                    <div class="owner-avatar">{{ user.name.0 }}</div>
+                    <div class="owner-details">
+                        <h4>{{ user.name }}</h4>
+                        <p>Property Owner</p>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="contactOwner()">
+                        <i class="fas fa-phone"></i>
+                        Contact Owner
+                    </button>
+                    <button class="btn btn-secondary" onclick="sendMessage()">
+                        <i class="fas fa-envelope"></i>
+                        Send Message
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Quick Stats
+                </h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">${{ val.cost }}</span>
+                        <span class="stat-label">Monthly Rent</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{ val.bedrooms }}</span>
+                        <span class="stat-label">Bedroom{% if val.bedrooms != 1 %}s{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Details -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-info-circle"></i>
+                    Property Details
+                </h3>
+                <ul class="details-list">
+                    <li>
+                        <span class="detail-label">Property Type:</span>
+                        <span class="detail-value">{{ type }}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">City:</span>
+                        <span class="detail-value">{{ val.city }}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Floor:</span>
+                        <span class="detail-value">{{ val.floor }}{% if val.floor == 1 %}st{% elif val.floor == 2 %}nd{% elif val.floor == 3 %}rd{% else %}th{% endif %}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Balcony:</span>
+                        <span class="detail-value">{{ val.balcany|title }}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Verification:</span>
+                        <span class="detail-value {% if val.verified %}status-verified{% else %}status-pending{% endif %}">
+                            {% if val.verified %}✓ Verified{% else %}⚠ Pending{% endif %}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+function contactOwner() {
+    alert('Contact feature will be implemented soon!');
+}
+
+function sendMessage() {
+    alert('Messaging feature will be implemented soon!');
+}
+
+// Add smooth scrolling for better UX
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+{% endblock %}

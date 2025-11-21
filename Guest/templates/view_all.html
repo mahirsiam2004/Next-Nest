@@ -1,0 +1,769 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    /* Reuse the same CSS variables and styles from index.html */
+    :root {
+        --primary: #6b46c1;
+        --primary-dark: #5a32b0;
+        --secondary: #8a67d5;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+        --text-light: #0b0811b8;
+        --text-muted: #130e1fbb;
+        --text-dim: #261c3b44;
+        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --card-bg: rgba(255, 255, 255, 0.5);
+        --border-light: rgba(255, 255, 255, 0.283);
+    }
+
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        padding: 4rem 0 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E") repeat;
+        opacity: 0.1;
+    }
+
+    .page-header-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+
+    .breadcrumb-nav {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 30px;
+        padding: 0.5rem 1.5rem;
+    }
+
+    .breadcrumb-nav a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .breadcrumb-nav a:hover {
+        color: white;
+    }
+
+    .breadcrumb-separator {
+        margin: 0 0.8rem;
+        opacity: 0.6;
+    }
+
+    /* Simple Filter Section */
+    .simple-filter-section {
+        background: #cab8f02e;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: -3rem 0 3rem;
+        position: relative;
+        z-index: 2;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        box-shadow: 0 6px 16px #cab8f035;
+    }
+
+    .filters-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-label {
+        color: var(--text-light);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .filter-input, .filter-select {
+        background: rgba(255, 255, 255, 0.6);
+        border: 2px solid rgba(138, 103, 213, 0.2);
+        border-radius: 8px;
+        padding: 0.7rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        transition: var(--transition);
+        backdrop-filter: blur(5px);
+    }
+
+    .filter-input::placeholder {
+        color: var(--text-muted);
+    }
+
+    .filter-input:focus, .filter-select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .price-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .sort-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(138, 103, 213, 0.1);
+    }
+
+    .sort-label {
+        color: var(--text-light);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .sort-select {
+        min-width: 150px;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        justify-content: center;
+    }
+
+    .filter-btn {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .filter-btn:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(107, 70, 193, 0.3);
+    }
+
+    .clear-btn {
+        background: transparent;
+        border: 2px solid var(--gray-400);
+        color: var(--gray-600);
+        box-shadow: none;
+    }
+
+    .clear-btn:hover {
+        background: var(--gray-100);
+        border-color: var(--gray-500);
+        color: var(--gray-700);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Results Header */
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: rgba(138, 103, 213, 0.05);
+        border-radius: 16px;
+        border: 1px solid rgba(138, 103, 213, 0.1);
+    }
+
+    .results-count {
+        color: var(--text-light);
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .results-count strong {
+        color: var(--primary);
+        font-weight: 800;
+        font-size: 1.4rem;
+    }
+
+    /* Property Grid */
+    .properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    /* Property Card Styles */
+    .property-card {
+        background: #cab8f02e;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 16px #cab8f035;
+        backdrop-filter: blur(10px);
+        transition: var(--transition);
+        border: 1px solid var(--border-light);
+        position: relative;
+    }
+    
+    .property-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+        background: #cab8f02e;
+        border-color: rgba(138, 103, 213, 0.2);
+    }
+    
+    .property-image-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .property-image {
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .property-card:hover .property-image {
+        transform: scale(1.05);
+    }
+    
+    .property-type {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 1;
+    }
+    
+    .property-favorite {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        backdrop-filter: blur(5px);
+        z-index: 1;
+    }
+    
+    .property-favorite:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1);
+    }
+    
+    .property-favorite i {
+        color: white;
+        font-size: 1.2rem;
+    }
+    
+    .property-details {
+        padding: 1.5rem;
+    }
+    
+    .property-title {
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .property-location {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .property-location i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+    }
+    
+    .property-description {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+        height: 4.5em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    
+    .property-meta {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-light);
+    }
+    
+    .property-meta-item {
+        display: flex;
+        align-items: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+    
+    .property-meta-item i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+    }
+    
+    .property-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    
+    .price-amount {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+    
+    .price-period {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .quick-view-btn {
+        background: linear-gradient(135deg, rgba(138, 103, 213, 0.8), rgba(107, 70, 193, 0.8));
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 0.7rem 1.5rem;
+        font-weight: 600;
+        width: 100%;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .quick-view-btn i {
+        margin-right: 0.5rem;
+    }
+    
+    .quick-view-btn:hover {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(107, 70, 193, 0.3);
+    }
+
+    /* Pagination */
+    .pagination-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+
+    .pagination {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(138, 103, 213, 0.1);
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+    }
+
+    .page-link:hover {
+        background: rgba(138, 103, 213, 0.2);
+        transform: scale(1.1);
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .page-link.active {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+    }
+
+    .page-link.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 0;
+        background: rgba(138, 103, 213, 0.05);
+        border-radius: 16px;
+        margin: 2rem 0;
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        color: rgba(138, 103, 213, 0.2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--primary);
+    }
+    
+    .empty-state-text {
+        color: var(--text-muted);
+        max-width: 500px;
+        margin: 0 auto 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .page-title {
+            font-size: 2rem;
+        }
+        
+        .filters-row {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+        
+        .results-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .properties-grid {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .price-inputs {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+
+        .sort-section {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-header {
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .simple-filter-section {
+            padding: 1rem;
+            margin: -2rem 0 2rem;
+        }
+        
+        .properties-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-actions {
+            flex-direction: column;
+        }
+
+        .filter-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .sort-select {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-content">
+        <div class="container">
+            <div class="breadcrumb-nav">
+                <a href="/">Home</a>
+                <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+                <span>{{ property_type|title }}s</span>
+            </div>
+            <h1 class="page-title">{{ property_type|title }}s for Rent</h1>
+            <p class="page-subtitle">Discover your perfect {{ property_type }} from our curated collection</p>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Simple Filter Section -->
+    <div class="simple-filter-section">
+        <form method="GET" action="" id="filterForm">
+            <div class="filters-row">
+                <!-- Price Range Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">Price Range</label>
+                    <div class="price-inputs">
+                        <input type="number" class="filter-input" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+                        <input type="number" class="filter-input" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+                    </div>
+                </div>
+
+                <!-- Bedrooms Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">Bedrooms</label>
+                    <select class="filter-select" name="bedrooms">
+                        <option value="">Any Bedrooms</option>
+                        <option value="1" {% if request.GET.bedrooms == '1' %}selected{% endif %}>1 Bedroom</option>
+                        <option value="2" {% if request.GET.bedrooms == '2' %}selected{% endif %}>2 Bedrooms</option>
+                        <option value="3" {% if request.GET.bedrooms == '3' %}selected{% endif %}>3 Bedrooms</option>
+                        <option value="4" {% if request.GET.bedrooms == '4' %}selected{% endif %}>4 Bedrooms</option>
+                        <option value="5" {% if request.GET.bedrooms == '5' %}selected{% endif %}>5+ Bedrooms</option>
+                    </select>
+                </div>
+
+                <!-- City Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">City</label>
+                    <select class="filter-select" name="city">
+                        <option value="">All Cities</option>
+                        {% for city in cities %}
+                            <option value="{{ city }}" {% if request.GET.city == city %}selected{% endif %}>{{ city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="sort-section">
+                <span class="sort-label">Sort by:</span>
+                <select class="sort-select" name="sort" onchange="this.form.submit()">
+                    <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
+                    <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="bedrooms" {% if request.GET.sort == 'bedrooms' %}selected{% endif %}>Bedrooms</option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="filter-btn">
+                    <i class="fas fa-search"></i>
+                    Apply Filters
+                </button>
+                <button type="button" class="filter-btn clear-btn" onclick="clearAllFilters()">
+                    <i class="fas fa-times"></i>
+                    Clear All
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Header -->
+    <div class="results-header">
+        <div class="results-count">
+            Found <strong>{{ properties.count }}</strong> {{ property_type }}s
+        </div>
+    </div>
+
+    <!-- Properties Grid -->
+    {% if properties %}
+    <div class="properties-grid">
+        {% for property in properties %}
+        <div class="property-card">
+            <div class="property-image-container">
+                <span class="property-type">{{ property_type|title }}</span>
+                <div class="property-favorite">
+                    <i class="far fa-heart"></i>
+                </div>
+                <img src='{{ property.img.url }}' class="property-image" alt="{{ property_type }} image">
+            </div>
+            <div class="property-details">
+                <h3 class="property-title">
+                    {% if property_type == 'apartment' %}
+                        Modern Apartment in {{ property.location }}
+                    {% else %}
+                        Spacious House in {{ property.location }}
+                    {% endif %}
+                </h3>
+                <div class="property-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ property.location }}, {{ property.city }}
+                </div>
+                <div class="property-price">
+                    <span class="price-amount">${{ property.cost }}</span>
+                    <span class="price-period">/ month</span>
+                </div>
+                <p class="property-description">{{ property.desc|slice:"0:120" }}{% if property.desc|length > 120 %}...{% endif %}</p>
+                <div class="property-meta">
+                    <div class="property-meta-item">
+                        <i class="fas fa-bed"></i> 
+                        {{ property.bedrooms }} Bed{% if property.bedrooms != 1 %}s{% endif %}
+                    </div>
+                    <div class="property-meta-item">
+                        <i class="fas fa-bath"></i> 
+                        {% if property_type == 'apartment' %}{% else %}{% endif %} Bath
+                    </div>
+                    <div class="property-meta-item">
+                        <i class="fas fa-city"></i> 
+                        {{ property.city }}
+                    </div>
+                </div>
+                <hr style="border-color: var(--border-light); margin: 1rem 0;">
+                <!-- Replace the existing form section in your template -->
+<form action="/descr" style="margin: 0;">
+    {% if property_type == 'house' %}
+        <button name="id" value="{{ property.house_id }}" class="quick-view-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+        </button>
+        <input type="hidden" name="type" value="house">
+    {% else %}
+        <button name="id" value="{{ property.room_id }}" class="quick-view-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+        </button>
+        <input type="hidden" name="type" value="apartment">
+    {% endif %}
+</form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="empty-state-icon fas fa-search"></i>
+        <h2 class="empty-state-title">No Properties Found</h2>
+        <p class="empty-state-text">Try adjusting your filters to find more properties that match your preferences.</p>
+    </div>
+    {% endif %}
+
+    <!-- Pagination -->
+    {% if properties.has_other_pages %}
+    <div class="pagination-section">
+        <div class="pagination">
+            {% if properties.has_previous %}
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ properties.previous_page_number }}" class="page-link">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            {% endif %}
+            
+            {% for page_num in properties.paginator.page_range %}
+                {% if page_num == properties.number %}
+                    <span class="page-link active">{{ page_num }}</span>
+                {% else %}
+                    <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_num }}" class="page-link">{{ page_num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if properties.has_next %}
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ properties.next_page_number }}" class="page-link">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function clearAllFilters() {
+    // Clear all form inputs
+    const form = document.getElementById('filterForm');
+    const inputs = form.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        if (input.name !== 'sort') {
+            input.value = '';
+        }
+    });
+    
+    // Reset sort to default
+    form.querySelector('select[name="sort"]').value = 'newest';
+}
+
+// Auto-submit form when sort changes
+document.addEventListener('DOMContentLoaded', function() {
+    const sortSelect = document.querySelector('select[name="sort"]');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+});
+</script>
+{% endblock %}

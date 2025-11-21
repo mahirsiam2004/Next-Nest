@@ -1,0 +1,640 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<style>
+  /* Modern About Page Styling with Purple Theme */
+  :root {
+    --primary: #6b46c1;
+    --primary-dark: #5a32b0;
+    --secondary: #8a67d5;
+    --dark: #0f172a;
+    --light: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+    --text-light: #0b0811b8;
+    --text-muted: #130e1fbb;
+    --text-dim: #261c3b44;
+    --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --card-bg: rgba(255, 255, 255, 0.5);
+    --border-light: rgba(255, 255, 255, 0.283);
+  }
+
+  .about-container {
+    margin-top: -50px;
+    padding: 2rem;
+  }
+
+  .about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    padding: 4rem 1rem;
+    border-radius: 16px;
+    background: #cab8f02e;
+    box-shadow: 0 6px 16px #cab8f035;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+  }
+
+  .about-header::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: url('{% static "assets/roomvala.jpg" %}') center/cover no-repeat;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  .about-title {
+    font-weight: 800;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .about-subtitle {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .about-section {
+    margin: 4rem 0;
+  }
+
+  .section-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+    color: var(--primary);
+    position: relative;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+
+  .service-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 4rem 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #cab8f02e;
+    box-shadow: 0 6px 16px #cab8f035;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  .service-row:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+  }
+
+  .service-row.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .service-image {
+    flex: 1;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+
+  .service-row:hover .service-image img {
+    transform: scale(1.05);
+  }
+
+  .service-content {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .service-title {
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+  }
+
+  .service-text {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .service-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    background: rgba(138, 103, 213, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    transition: var(--transition);
+  }
+
+  .feature-item:hover {
+    background: rgba(138, 103, 213, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .feature-item i {
+    color: var(--primary);
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .feature-text {
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  .stats-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 3rem 0;
+    margin: 4rem 0;
+    background: rgba(138, 103, 213, 0.05);
+    border-radius: 16px;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .stat-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #cab8f02e;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: var(--primary);
+    border: 2px solid rgba(138, 103, 213, 0.2);
+    transition: var(--transition);
+  }
+
+  .stat-item:hover .stat-icon {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(138, 103, 213, 0.2);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-text {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  .team-section {
+    margin: 4rem 0;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .team-card {
+    background: #cab8f02e;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px #cab8f035;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  .team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(138, 103, 213, 0.15);
+  }
+
+  .team-image {
+    height: 280px;
+    overflow: hidden;
+  }
+
+  .team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+
+  .team-card:hover .team-image img {
+    transform: scale(1.05);
+  }
+
+  .team-info {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .team-name {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .team-role {
+    color: var(--primary);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .team-bio {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .team-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .social-link {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(138, 103, 213, 0.1);
+    color: var(--primary);
+    border-radius: 50%;
+    transition: var(--transition);
+  }
+
+  .social-link:hover {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    padding: 4rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    margin: 4rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: url('{% static "assets/hand.jpg" %}') center/cover no-repeat;
+    opacity: 0.05;
+    z-index: 0;
+  }
+
+  .cta-title {
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-btn {
+    background: white;
+    color: var(--primary);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-btn:hover {
+    background: var(--dark);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 992px) {
+    .service-row, .service-row.reverse {
+      flex-direction: column;
+    }
+
+    .service-image {
+      min-height: 300px;
+    }
+
+    .stats-section {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-container {
+      padding: 1rem;
+    }
+
+    .about-title {
+      font-size: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+    }
+
+    .service-content {
+      padding: 2rem;
+    }
+
+    .stat-item {
+      padding: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .stats-section {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="about-container">
+  <div class="about-header">
+    <h1 class="about-title">About Us</h1>
+    <p class="about-subtitle">We connect people with their perfect homes and help property owners find the right tenants.</p>
+  </div>
+
+  <div class="about-section">
+    <h2 class="section-title">Our Services</h2>
+    
+    <div class="service-row">
+      <div class="service-image">
+        <img src="{% static 'assets/roomvala.jpg'%}" alt="Room Finder Service">
+      </div>
+      <div class="service-content">
+        <h3 class="service-title">Finding Perfect Homes</h3>
+        <p class="service-text">Our work is to provide houses and rooms to people who are new to the area and need a place to stay. We connect with owners and residents who are searching for roommates or paying guests to create perfect matches.</p>
+        <div class="service-features">
+          <div class="feature-item">
+            <i class="fa fa-check-circle"></i>
+            <span class="feature-text">Verified Listings</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa fa-map-marker"></i>
+            <span class="feature-text">Prime Locations</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa fa-shield"></i>
+            <span class="feature-text">Safe Neighborhoods</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="service-row reverse">
+      <div class="service-image">
+        <img src="{% static 'assets/hand.jpg'%}" alt="Certified Properties">
+      </div>
+      <div class="service-content">
+        <h3 class="service-title">Quality Assurance</h3>
+        <p class="service-text">You can choose rooms from thousands of certified and rated properties. Our aim is to provide safe and comfortable homes. Register as an owner or roommate and find the perfect person to share your space with.</p>
+        <div class="service-features">
+          <div class="feature-item">
+            <i class="fa fa-star"></i>
+            <span class="feature-text">Rated Properties</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa fa-home"></i>
+            <span class="feature-text">Comfort Focused</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa fa-users"></i>
+            <span class="feature-text">Compatible Matches</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stat-item">
+      <div class="stat-icon">
+        <i class="fa fa-home"></i>
+      </div>
+      <div class="stat-number">5000+</div>
+      <div class="stat-text">Properties Listed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">
+        <i class="fa fa-users"></i>
+      </div>
+      <div class="stat-number">8500+</div>
+      <div class="stat-text">Happy Customers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">
+        <i class="fa fa-map-marker"></i>
+      </div>
+      <div class="stat-number">25+</div>
+      <div class="stat-text">Cities Covered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">
+        <i class="fa fa-certificate"></i>
+      </div>
+      <div class="stat-number">98%</div>
+      <div class="stat-text">Satisfaction Rate</div>
+    </div>
+  </div>
+
+<div class="team-section">
+    <h2 class="section-title">Our Team</h2>
+    <div class="team-grid">
+      <!-- Team Member 1 - Mahir Siam -->
+      <div class="team-card">
+        <div class="team-image">
+          <img src="https://i.postimg.cc/rsYGyyMB/Picsart-25-06-16-10-17-38-296.jpg" alt="Mahir Siam">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">Mahir Siam</h3>
+          <div class="team-role">Founder & CEO</div>
+          <p class="team-bio">With a passion for real estate innovation, Mahir leads our vision to revolutionize the rental market.</p>
+          <div class="team-social">
+            <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 2 - Johny Sins -->
+      <div class="team-card">
+        <div class="team-image">
+          <img src="https://i.postimg.cc/G2yyCPHb/received-819524237497846.jpg" alt="Johny Sins">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">SH Rafi</h3>
+          <div class="team-role">Property Relations Manager</div>
+          <p class="team-bio">Rafi ensures all our listed properties meet our high standards of quality and safety.</p>
+          <div class="team-social">
+            <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 3 - Delower Sakib -->
+      <div class="team-card">
+        <div class="team-image">
+          <img src="https://i.postimg.cc/Sx61y8Ys/received-1340410004154592.jpg" alt="Dewan Sakib">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">Dewan Sakib</h3>
+          <div class="team-role">Technical Lead</div>
+          <p class="team-bio">Dewan oversees our platform's development and ensures a smooth, secure user experience for all.</p>
+          <div class="team-social">
+            <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 4 - Abdullah -->
+      <div class="team-card">
+        <div class="team-image">
+          <img src="https://i.postimg.cc/3N6p5LZw/FB-IMG-1763381295782.jpg" alt="Abdullah">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">Abdullah</h3>
+          <div class="team-role">Head of Operations</div>
+          <p class="team-bio">Abdullah manages daily operations and ensures seamless coordination between property owners and tenants.</p>
+          <div class="team-social">
+            <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 5 - Shihab -->
+      <div class="team-card">
+        <div class="team-image">
+          <img src="https://i.postimg.cc/HWJgTZY0/received-2099337654204989.jpg" alt="Shihab">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">Shihab</h3>
+          <div class="team-role">Customer Success Manager</div>
+          <p class="team-bio">Shihab and his team ensure you have a smooth, hassle-free experience finding your perfect home.</p>
+          <div class="team-social">
+            <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h2 class="cta-title">Ready to Find Your Perfect Home?</h2>
+    <p class="cta-text">Whether you're looking for a new place to stay or want to list your property, we're here to help you every step of the way.</p>
+    <a href="/home" class="cta-btn">Start Searching</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextNest - Sign Up</title>
+    {% load static %}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: block;
+            color: #fff;
+            background: #7E57C2; /* Solid purple background */
+            position: relative;
+            overflow: hidden; /* Changed from 'auto' to 'hidden' to disable scrolling */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: #9575CD;
+            top: -150px;
+            right: -50px;
+        }
+
+        .shape-2 {
+            width: 250px;
+            height: 250px;
+            background: #673AB7;
+            bottom: -100px;
+            left: -50px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 1); /* White background */
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            max-height: 600px;
+        }
+
+        .info-panel {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            background: rgba(103, 58, 183, 0.9); /* Darker purple */
+        }
+
+        .info-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                rgba(255, 255, 255, 0.05) 100%
+            );
+            z-index: -1;
+        }
+
+        .brand {
+            margin-bottom: 1.5rem;
+        }
+
+        .headline {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .subheadline {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 1.5rem;
+        }
+
+        .features {
+            margin-bottom: 1.5rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            transition: transform 0.2s ease;
+        }
+
+        .feature:hover {
+            transform: translateX(3px);
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin-right: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-text {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+        }
+
+        .info-panel-bottom {
+            margin-top: auto;
+        }
+
+        .social-login-left {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-label-left {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 0.8rem;
+        }
+
+        .social-buttons-left {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .social-btn-left {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .social-btn-left:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .login-link-left {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .login-link-left a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .login-link-left a:hover {
+            text-decoration: underline;
+        }
+
+        .credits {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-panel {
+            flex: 1.2;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            color: #333;
+        }
+
+        .form-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            color: #9E9E9E;
+        }
+
+        input {
+            width: 100%;
+            background: #F5F5F5;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            padding: 14px 14px 14px 42px;
+            color: #333;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #7E57C2;
+            background: #F9F5FF;
+            box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
+        }
+
+        input::placeholder {
+            color: #9E9E9E;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .terms input {
+            width: auto;
+            margin-right: 0.8rem;
+            margin-top: 0.3rem;
+            accent-color: #7E57C2;
+        }
+
+        .terms label {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .terms a {
+            color: #7E57C2;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .terms a:hover {
+            color: #5E35B1;
+            text-decoration: underline;
+        }
+
+        .btn-signup {
+            background: #7E57C2;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 4px 10px rgba(126, 87, 194, 0.3);
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+        h1 {
+      font-family: 'Play', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+    }
+
+        .btn-signup:hover {
+            background: #673AB7;
+        }
+
+        /* Alert styling */
+        .custom-alert {
+            background: #F3E5F5;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #7E57C2;
+            color: #4A148C;
+        }
+
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .card {
+                flex-direction: column;
+                max-height: none;
+            }
+
+            .info-panel, .form-panel {
+                padding: 2rem;
+            }
+
+            .headline {
+                font-size: 1.8rem;
+            }
+            
+            .social-login-left {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                width: 95%;
+                padding: 1rem 0;
+            }
+
+            .info-panel, .form-panel {
+                padding: 1.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .headline {
+                font-size: 1.6rem;
+            }
+            
+            .social-buttons-left {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="info-panel">
+                <div>
+                    <h1>🏢NextNest</h1>
+                    <h1 class="headline">Welcome to NextNest</h1>
+                    <p class="subheadline">Join Us Now!</p>
+
+                    <div class="features">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="feature-text">Premium property listings</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="feature-text">Virtual tours available</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="feature-text">Personalized housing matches</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-panel-bottom">
+                    <div class="social-login-left">
+                        
+                        <div class="social-buttons-left">
+                            <button type="button" class="social-btn-left">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"/>
+                                </svg>
+                                Google
+                            </button>
+                            
+                            <button type="button" class="social-btn-left">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/>
+                                </svg>
+                                Facebook
+                            </button>
+                        </div>
+                        
+                        <div class="login-link-left">
+                            Already have an account? <a href="/login">Sign In</a>
+                        </div>
+                    </div>
+                    
+                    <div class="credits">© 2025 NextNest. All rights reserved.</div>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                <div class="form-header">
+                    <h2 class="form-title">Create New Account</h2>
+                    <p class="form-subtitle">Fill in the details below to get started</p>
+                </div>
+
+                {% if msg %}
+                <div class="custom-alert">
+                    <p>{{ msg }}</p>
+                </div>
+                {% endif %}
+
+                <form action="/register" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="#9E9E9E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="#9E9E9E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <input type="email" id="email" name="email" placeholder="dinar@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pass">Create Password</label>
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="#9E9E9E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <input type="password" id="pass" name="pass" placeholder="Enter a secure password" required>
+                        </div>
+                    </div>
+
+                    <div class="terms">
+                        <input type="checkbox" id="terms" required checked style="pointer-events: none;">
+                        <label for="terms">I agree with the <a href="#">Terms of services</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" class="btn-signup">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
