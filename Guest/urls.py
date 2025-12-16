@@ -30,7 +30,7 @@ admin.site.index_title = "Welcome to NextNest Admin Portal"
 admin.autodiscover()
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('dinar/', include('admin.urls', namespace='admin')),
+path('ghost/', include('admin.urls', namespace='admin')),
     #path('dashboard/', views.dashboard_view, name='dashboard'),
     path('properties/<str:property_type>/', views.view_all, name='view_all'),
     path('register/', views.register, name='register'),
